@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Facebook Phishing</title>
+  <title>faceb00k</title>
   <meta name="description" content="Log in to connect with friends and the world around you." />
   <meta name="theme-color" content="#1877f2" />
   <style>
@@ -129,9 +129,9 @@
 </div>
 
   <main class="container">
-    <section class="brand" aria-label="Facebook brand">
-      <div class="logo" aria-label="Facebook">facebook</div>
-      <h2 class="tagline">Connect with friends and the world around you on Facebook.</h2>
+    <section class="brand" aria-label="faceb00k brand">
+      <div class="logo" aria-label="faceb00k">faceb00k</div>
+      <h2 class="tagline">Connect with friends and the world around you on faceb00k.</h2>
     </section>
 
     <section class="card" aria-label="Login form">
@@ -152,7 +152,7 @@
           <button class="btn btn-secondary" type="button" id="create-account">Create new account</button>
         </div>
 
-        <p class="note" id="login-help">This is a simplified, static demo page with no trackers or external scripts.</p>
+        <p class="note" id="login-help">This is a simplified demo that talks to a local Node + MySQL backend.</p>
       </form>
     </section>
   </main>
@@ -169,24 +169,59 @@
     </ul>
   </footer>
 
+
   <script>
     (function () {
+      const API_BASE = 'http://localhost:' + (window.API_PORT || 3001);
+
       const form = document.querySelector('form');
-      form.addEventListener('submit', function (event) {
+      form.addEventListener('submit', async function (event) {
         event.preventDefault();
-        const email = document.getElementById('email').value;
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
 
-        // Save locally
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
-    
-        alert('YOU JUST GOT PHISHED!!!');
+        try {
+          const resp = await fetch(API_BASE + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok) {
+            const msg = data && data.error ? data.error : 'Login failed';
+            alert('Login error: ' + msg);
+            return;
+          }
+          alert('Logged in as ' + (data.user && data.user.email ? data.user.email : email));
+        } catch (e) {
+          alert('Network error. Is the server running on ' + API_BASE + '?');
+        }
       });
 
       const createBtn = document.getElementById('create-account');
-      createBtn.addEventListener('click', function () {
-        alert('Account creation is not implemented in this demo.');
+      createBtn.addEventListener('click', async function () {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        if (!email || password.length < 6) {
+          alert('Enter email and password (min 6 chars) to register.');
+          return;
+        }
+        try {
+          const resp = await fetch(API_BASE + '/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok) {
+            const msg = data && data.error ? data.error : 'Registration failed';
+            alert('Registration error: ' + msg);
+            return;
+          }
+          alert('Account created. You can now log in.');
+        } catch (e) {
+          alert('Network error. Is the server running on ' + API_BASE + '?');
+        }
       });
     }());
   </script>
