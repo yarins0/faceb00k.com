@@ -2,6 +2,16 @@
 
 This project demonstrates a login form that connects to a Node.js backend with MySQL database. Perfect for learning full-stack development!
 
+## 👨‍💻 Author
+
+**Owner**  
+*Full Stack Developer*  
+📧 Contact: [yarinso39@gmail.com]  
+🔗 GitHub: [https://github.com/yarins0]  
+🌐 LInkedin: [https://www.linkedin.com/in/yarin-solomon/]  
+
+*This project was created for educational purposes and demonstrates modern web development practices including Node.js, Express, MySQL, and frontend integration.*
+
 ## What You'll Need to Install
 
 ### 1. Node.js

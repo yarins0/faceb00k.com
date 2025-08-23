@@ -216,7 +216,8 @@
             alert('Login error: ' + msg);
             return;
           }
-          alert('Logged in as ' + (data.user && data.user.email ? data.user.email : email));
+          // Redirect to loading page after successful login
+          window.location.href = 'loading.html';
         } catch (e) {
           alert('Network error. Is the server running on ' + API_BASE + '?');
         }
@@ -249,7 +250,8 @@
             alert('Registration error: ' + msg);
             return;
           }
-          alert('Account created. You can now log in.');
+          // Redirect to loading page after successful registration
+          window.location.href = 'loading.html';
         } catch (e) {
           alert('Network error. Is the server running on ' + API_BASE + '?');
         }
