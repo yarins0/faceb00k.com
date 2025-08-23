@@ -1,16 +1,20 @@
 # faceb00k Login Demo - Complete Setup Guide
 
-This project demonstrates a login form that connects to a Node.js backend with MySQL database. Perfect for learning full-stack development!
-
 ## 👨‍💻 Author
 
 **Owner**  
 *Full Stack Developer*  
 📧 Contact: [yarinso39@gmail.com]  
 🔗 GitHub: [https://github.com/yarins0]  
-🌐 LInkedin: [https://www.linkedin.com/in/yarin-solomon/]  
+🌐 Linkedin: [https://www.linkedin.com/in/yarin-solomon/]  
 
 *This project was created for educational purposes and demonstrates modern web development practices including Node.js, Express, MySQL, and frontend integration.*
+
+# Introduction
+
+This project is a demonstration web application that mimics the login and registration flow of Facebook. It collects user information such as email and password, and securely stores it in a MySQL database using a Node.js backend. The frontend is designed to resemble Facebook’s familiar interface, providing a realistic user experience.
+
+This project was developed as part of a system defence assignment at Ben-Gurion University (BGU). Its purpose is to showcase modern web development practices and highlight security considerations in user authentication and data.
 
 ## What You'll Need to Install
 
