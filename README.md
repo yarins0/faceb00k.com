@@ -1,6 +1,37 @@
 # faceb00k Login Demo - Complete Setup Guide
 
-This project demonstrates a login form that connects to a Node.js backend with MySQL database. Perfect for learning full-stack development!
+## 📋 Project Overview
+
+This educational project creates a **Facebook-inspired login interface** that demonstrates how phishing attacks work in controlled environments. The application mimics Facebook's login page design and functionality, capturing user credentials (email and password) and storing them in a MySQL database for analysis.
+
+### 🎯 Purpose & Educational Value
+
+**This project is designed for:**
+- **Security awareness training** - Understanding how credential harvesting works
+- **Educational purposes** - Learning full-stack web development with real-world examples  
+- **Penetration testing** - Authorized security testing in controlled environments
+- **Research** - Studying social engineering techniques and user behavior
+
+### ⚠️ Important Ethical Notice
+
+This project is **strictly for educational and authorized security testing purposes only**. It should never be used to target real users or collect credentials without explicit permission. Always review the [DISCLAIMER.md](DISCLAIMER.md) before use.
+
+### 🛠️ Technology Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript (mimics Facebook's UI/UX)
+- **Backend**: Node.js with Express.js framework
+- **Database**: MySQL with auto-generated schema
+- **Security**: CORS enabled, parameterized queries (passwords stored as plain text for educational purposes)
+
+### 🔍 What It Does
+
+1. **Visual Mimicry**: Replicates Facebook's login page design with authentic styling
+2. **Credential Collection**: Captures email addresses and passwords through login/signup forms
+3. **Data Storage**: Stores collected credentials in a MySQL database with timestamps
+4. **Action Tracking**: Records whether users clicked "Login" or "Sign Up" buttons
+5. **API Endpoints**: Provides endpoints to view collected data for analysis
+
+The application creates a realistic Facebook login experience that demonstrates how easily users can be deceived by convincing interfaces. All data collection is transparent and intended for educational analysis only.
 
 ## 👨‍💻 Author
 
