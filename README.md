@@ -41,7 +41,7 @@ You should see version numbers for each. If any command fails, restart your comp
 ### Step 3: Configure the Project
 1. Navigate to your project folder:
 ```bash
-cd "c:\Users\Owner\Documents\www.faceb00k.com"
+cd "c:\Users\Owner\Documents\faceb00k.com"
 ```
 
 2. Copy the environment file:
@@ -79,7 +79,7 @@ You should see: "Server listening on http://localhost:3001"
 - **Frontend**: `index.html` - A simple login form styled like faceb00k
 - **Backend**: `server.js` - Node.js server with Express
 - **Database**: MySQL with auto-created `fb_demo` database and `users` table
-- **Security**: Passwords are hashed with bcrypt, SQL queries are parameterized
+- **Security**: Passwords are stored as plain text, SQL queries are parameterized
 
 ## API Endpoints
 
@@ -110,8 +110,88 @@ You should see: "Server listening on http://localhost:3001"
 Once everything is working:
 1. Try creating multiple user accounts
 2. Check the MySQL database to see stored users
-3. Modify the frontend styling in `index.html`
-4. Add new features to the backend API
+
+## Viewing Database Tables
+
+### Option 1: MySQL Command Line
+To see what's in your database tables, use the MySQL command line:
+
+```bash
+# View all users in the table
+mysql -u root -p -e "USE fb_demo; SELECT * FROM users;"
+
+# View users with specific information (without password hashes)
+mysql -u root -p -e "USE fb_demo; SELECT id, email, created_at FROM users;"
+
+# Count total users
+mysql -u root -p -e "USE fb_demo; SELECT COUNT(*) FROM users;"
+
+# Find a specific user
+mysql -u root -p -e "USE fb_demo; SELECT * FROM users WHERE email = 'example@email.com';"
+```
+
+**Note:** You'll be prompted for your MySQL root password when running these commands.
+
+### Option 2: MySQL Workbench (GUI)
+If you prefer a visual interface:
+1. Open MySQL Workbench
+2. Connect to your local MySQL instance
+3. Navigate to the `fb_demo` database
+4. Right-click on the `users` table and select "Select Rows - Limit 1000"
+
+### Option 3: Built-in API Endpoint
+The project includes a built-in endpoint to view users through your web app. No additional code needed!
+
+**Endpoint**: `GET /api/auth/users`
+**Access it at**: `http://localhost:3001/api/auth/users`
+**Returns**: JSON with all users including id, email, action_type, and created_at fields
+**action_type values**:
+- `signup`: User clicked "Create new account" button
+- `login`: User clicked "Log in" button
+**Note**: This endpoint returns all user data including password hashes. For production use, consider filtering sensitive fields.
+
+## Resetting/Deleting the Database
+
+### Option 1: Drop the entire table (removes all data)
+```bash
+mysql -u root -p -e "USE fb_demo; DROP TABLE users;"
+```
+**What happens**: 
+- Completely removes the `users` table and all user data
+- When you restart the server, it will automatically recreate the table with the new schema
+- Use this when you want a completely fresh start
+
+### Option 2: Drop and recreate the entire database
+```bash
+mysql -u root -p -e "DROP DATABASE fb_demo;"
+```
+**What happens**:
+- Removes the entire `fb_demo` database
+- All tables and data are permanently deleted
+- Server will recreate everything from scratch on next startup
+
+### Option 3: Delete all data but keep table structure
+```bash
+mysql -u root -p -e "USE fb_demo; DELETE FROM users;"
+```
+**What happens**:
+- Keeps the table structure but removes all user records
+- Useful when you want to keep the schema but start with no users
+
+### Option 4: Reset specific user data
+```bash
+# Delete a specific user by email
+mysql -u root -p -e "USE fb_demo; DELETE FROM users WHERE email = 'user@example.com';"
+
+# Delete users with specific action types
+mysql -u root -p -e "USE fb_demo; DELETE FROM users WHERE action_type = 'login';"
+```
+
+## After Resetting
+When you restart your server (`npm start`), it will automatically:
+1. Create the `fb_demo` database if it doesn't exist
+2. Create the `users` table with the current schema (including `action_type` column)
+3. Be ready to accept new users
 
 ## Need Help?
 
@@ -120,4 +200,4 @@ Once everything is working:
 - Verify your `.env` file has the correct MySQL password
 - Make sure you're running commands from the project folder
 
-Happy coding! 🚀
+
