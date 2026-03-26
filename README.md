@@ -1,12 +1,26 @@
-# faceb00k Login Demo - Complete Setup Guide
+# faceb00k Login Demo
+
+**[Live Demo](https://YOUR_PORTFOLIO_URL/faceb00k/)** &nbsp;|&nbsp; BGU Security Assignment
+
+### Login page
+![Login page](docs/screenshot-login.png)
+
+### Loading screen (victim stall)
+![Infinite loading screen](docs/screenshot-loading.png)
+
+### Captured credentials in MySQL
+![Database table showing captured emails and passwords](docs/screenshot-db.png)
+
+---
 
 ## 👨‍💻 Author
 
 **Owner**  
 *Full Stack Developer*  
-📧 Contact: [yarinso39@gmail.com]  
-🔗 GitHub: [https://github.com/yarins0]  
-🌐 Linkedin: [https://www.linkedin.com/in/yarin-solomon/]  
+📧 Contact: [yarinso39@gmail.com]
+🔗 GitHub: [https://github.com/yarins0]
+🌐 Linkedin: [https://www.linkedin.com/in/yarin-solomon/]
+💼 Portfolio: [https://YOUR_PORTFOLIO_URL]
 
 *This project was created for educational purposes and demonstrates modern web development practices including Node.js, Express, MySQL, and frontend integration.*
 
@@ -55,7 +69,7 @@ You should see version numbers for each. If any command fails, restart your comp
 ### Step 3: Configure the Project
 1. Navigate to your project folder:
 ```bash
-cd "c:\Users\Owner\Documents\faceb00k.com"
+cd path/to/faceb00k.com
 ```
 
 2. Copy the environment file:

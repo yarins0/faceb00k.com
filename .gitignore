@@ -1,3 +1,9 @@
+# Claude / claude-flow
+.claude/
+.claude-flow/
+.mcp.json
+CLAUDE.md
+
 # Dependencies
 node_modules/
 npm-debug.log*
@@ -13,7 +19,6 @@ package-lock.json
 .env.production.local
 
 # Database files
-*.sql
 *.db
 *.sqlite
 *.sqlite3

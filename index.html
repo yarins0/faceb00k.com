@@ -122,6 +122,11 @@
 </head>
 <body>
 
+<!-- Demo Mode Banner -->
+<div role="note" aria-label="Demo mode notice" style="background:#1877f2;color:#fff;padding:7px 16px;text-align:center;font-size:13px;font-weight:600;letter-spacing:0.2px;">
+  Demo Mode &mdash; No live backend. Credentials entered here are <strong>not</strong> stored or transmitted.
+</div>
+
 <!-- Educational Disclaimer -->
 <div id="edu-disclaimer" role="note" aria-label="Educational disclaimer" style="background:#fff3cd;color:#856404;border:1px solid #ffe8a1;padding:4px 8px;margin:8px auto;max-width:980px;border-radius:4px;font-size:12px;line-height:1.2;text-align:center;">
     <strong>הבהרה:</strong> פרויקט זה מיועד למטרות לימוד ומחקר אבטחה בלבד. אין להשתמש בו כדי לפגוע במשתמשים אמיתיים או להפר חוק, מדיניות או תנאי שימוש.<br />
@@ -142,7 +147,15 @@
         </div>
         <div>
           <label for="password">Password</label>
-          <input class="input" type="password" id="password" name="password" autocomplete="current-password" required />
+          <div style="position:relative">
+            <input class="input" type="password" id="password" name="password" autocomplete="current-password" required style="padding-right:44px" />
+            <button type="button" id="toggle-password" aria-label="Show password" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;color:var(--muted)">
+              <!-- eye-open icon -->
+              <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <!-- eye-off icon (hidden by default) -->
+              <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="actions">
@@ -152,7 +165,7 @@
           <button class="btn btn-secondary" type="button" id="create-account">Create new account</button>
         </div>
 
-        <p class="note" id="login-help">This is a simplified demo that talks to a local Node + MySQL backend.</p>
+        <p class="note" id="login-help">Demo mode &mdash; submissions are simulated. <a class="link" href="https://github.com/yarins0/faceb00k.com" target="_blank" rel="noopener">View backend source on GitHub.</a></p>
       </form>
     </section>
   </main>
@@ -160,8 +173,8 @@
   <footer aria-label="Site links">
     <div>Beta © 2025</div>
     <ul>
-      <li><a href="#">Sign Up</a></li>
-      <li><a href="#">Log In</a></li>
+      <li><a href="index.html">Sign Up</a></li>
+      <li><a href="index.html">Log In</a></li>
       <li><a href="#">Messenger</a></li>
       <li><a href="#">Privacy</a></li>
       <li><a href="#">Terms</a></li>
@@ -170,94 +183,7 @@
   </footer>
 
 
-  <script>
-    (function () {
-      const API_BASE = 'http://localhost:' + (window.API_PORT || 3001);
-
-      // Email validation function
-      function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-      }
-
-      // Validate email and show error if invalid
-      function validateEmail(email) {
-        if (!email) {
-          alert('Please enter an email address.');
-          return false;
-        }
-        if (!isValidEmail(email)) {
-          alert('Please enter a valid email address (e.g., user@example.com).');
-          return false;
-        }
-        return true;
-      }
-
-      const form = document.querySelector('form');
-      form.addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        // Validate email before login
-        if (!validateEmail(email)) {
-          return;
-        }
-
-        try {
-          const resp = await fetch(API_BASE + '/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-          const data = await resp.json().catch(() => ({}));
-          if (!resp.ok) {
-            const msg = data && data.error ? data.error : 'Login failed';
-            alert('Login error: ' + msg);
-            return;
-          }
-          // Redirect to loading page after successful login
-          window.location.href = 'loading.html';
-        } catch (e) {
-          alert('Network error. Is the server running on ' + API_BASE + '?');
-        }
-      });
-
-      const createBtn = document.getElementById('create-account');
-      createBtn.addEventListener('click', async function () {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        
-        // Validate email before registration
-        if (!validateEmail(email)) {
-          return;
-        }
-        
-        if (password.length < 6) {
-          alert('Password must be at least 6 characters long.');
-          return;
-        }
-        
-        try {
-          const resp = await fetch(API_BASE + '/api/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-          });
-          const data = await resp.json().catch(() => ({}));
-          if (!resp.ok) {
-            const msg = data && data.error ? data.error : 'Registration failed';
-            alert('Registration error: ' + msg);
-            return;
-          }
-          // Redirect to loading page after successful registration
-          window.location.href = 'loading.html';
-        } catch (e) {
-          alert('Network error. Is the server running on ' + API_BASE + '?');
-        }
-      });
-    }());
-  </script>
+  <script src="/login.js"></script>
 </body>
 </html>
 

