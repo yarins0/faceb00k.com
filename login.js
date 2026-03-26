@@ -32,6 +32,32 @@
     return true;
   }
 
+  // Mirrors Facebook's password requirements:
+  // at least 8 characters, with uppercase, lowercase, a digit, and a special character.
+  function validatePassword(password) {
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return false;
+    }
+    if (!/[A-Z]/.test(password)) {
+      alert('Password must include at least one uppercase letter.');
+      return false;
+    }
+    if (!/[a-z]/.test(password)) {
+      alert('Password must include at least one lowercase letter.');
+      return false;
+    }
+    if (!/[0-9]/.test(password)) {
+      alert('Password must include at least one number.');
+      return false;
+    }
+    if (!/[!@#$%]/.test(password)) {
+      alert('Password must include at least one special character (!, @, #, $, %).');
+      return false;
+    }
+    return true;
+  }
+
   // Toggles the password field between plain text and hidden,
   // and swaps the eye / eye-off icon to match.
   const toggleBtn = document.getElementById('toggle-password');
@@ -41,8 +67,8 @@
   toggleBtn.addEventListener('click', function () {
     const isHidden = passwordInput.type === 'password';
     passwordInput.type = isHidden ? 'text' : 'password';
-    iconEye.style.display    = isHidden ? 'none' : '';
-    iconEyeOff.style.display = isHidden ? ''     : 'none';
+    iconEye.style.display    = isHidden ? 'none'   : 'inline';
+    iconEyeOff.style.display = isHidden ? 'inline' : 'none';
     toggleBtn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
   });
 
@@ -64,11 +90,7 @@
     const password = document.getElementById('password').value;
 
     if (!validateEmail(email)) return;
-
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters long.');
-      return;
-    }
+    if (!validatePassword(password)) return;
 
     await apiCall('/register', { email, password });
     window.location.href = 'loading.html';

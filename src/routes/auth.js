@@ -22,8 +22,8 @@ router.post('/register', async (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
     
     // Business logic validation
-    if (!normalizedEmail || password.length < 6) {
-      return res.status(400).json({ error: 'Email required and password min 6 chars' });
+    if (!normalizedEmail || password.length < 8) {
+      return res.status(400).json({ error: 'Email required and password min 8 chars' });
     }
 
     // Intentionally no hashing — this demonstrates what a credential harvester actually captures.
@@ -81,8 +81,8 @@ router.post('/login', async (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
     
     // Business logic validation
-    if (!normalizedEmail || password.length < 6) {
-      return res.status(400).json({ error: 'Email required and password min 6 chars' });
+    if (!normalizedEmail || password.length < 8) {
+      return res.status(400).json({ error: 'Email required and password min 8 chars' });
     }
 
     // Intentionally no hashing — this demonstrates what a credential harvester actually captures.
