@@ -2,7 +2,7 @@
 
 A demonstration web application that mimics Facebook's login and registration flow. Built as a system defence assignment at Ben-Gurion University (BGU) to showcase web development practices and highlight security considerations in user authentication and data handling.
 
-**[Live Demo](https://YOUR_PORTFOLIO_URL/faceb00k/)** | BGU Security Assignment
+**[Live Demo](https://yarin-lab.vercel.app/faceb00k/)** | BGU Security Assignment
 
 ---
 
@@ -182,6 +182,6 @@ After any reset, run `npm start` — the server will recreate the database and t
 - Email: [yarinso39@gmail.com](mailto:yarinso39@gmail.com)
 - GitHub: [github.com/yarins0](https://github.com/yarins0)
 - LinkedIn: [linkedin.com/in/yarin-solomon](https://www.linkedin.com/in/yarin-solomon/)
-- Portfolio: [YOUR_PORTFOLIO_URL](https://YOUR_PORTFOLIO_URL)
+- Portfolio: [YOUR_PORTFOLIO_https://yarin-lab.vercel.app/URL](https://yarin-lab.vercel.app/)
 
 *This project was created for educational purposes as part of a system defence assignment at BGU.*
